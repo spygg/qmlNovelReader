@@ -16,7 +16,7 @@ Window {
 
     Rectangle{
         anchors.centerIn: parent;
-        width: mainWindow.width - 2;
+        width: mainWindow.width;
         height: mainWindow.height;
         radius: 5
 

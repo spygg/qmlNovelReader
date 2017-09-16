@@ -5,95 +5,136 @@ import FileIO 1.0
 Item {
     id: mainWRoot;
 
-    anchors.left: parent.left
-    anchors.leftMargin: 5
-    anchors.right: parent.right
-    anchors.rightMargin: 5
-
-    Rectangle{
+    Rectangle
+    {
         id:mainWidget
         width: parent.width
         height: parent.height
-
-        FileIO {
+        //        anchors.left: parent.left
+        //        anchors.leftMargin: 50
+        //        anchors.right: parent.right
+        //        anchors.rightMargin: 50
+        //        anchors.top: parent.top
+        //        anchors.topMargin: 5
+        //        anchors.bottom: parent.bottom
+        //        anchors.bottomMargin: 5
+        //var novelText = "";
+        property string novelText: "QML 小说阅读器\n\n作者:spygg\n\ngithub:www.github.com/spygg/\n\n"
+        FileIO
+        {
             id: myFile
-            source: "./novels/0.txt"
+            fileName: "/home/spygg/code/qmlTutorial/qmlNovelReader/src/novel/novel.txt"
             onError: console.log(msg)
         }
 
-        Component.onCompleted: {
-            //console.log( "WRITE"+ myFile.write("TEST TEST file is OK"));
-            content.text =  myFile.readPage(1);
+        Component.onCompleted:
+        {
+//            while(1)
+//            {
+//                novelText += myFile.readAWord();
+
+//                if(content.height < content.contentHeight - 200)
+//                    break;
+
+//                if(content.truncated)
+//                    break;
+//                content.text = novelText
+//                console.log(content.height , content.contentHeight)
+//            }
+
+            //novelText =  myFile.readPage(1);
+            //novelText =  myFile.readAll();
+            myFile.readAll();
             console.log("mainHeight:" + mainWidget.height)
+            console.log(novelText)
+
 
         }
 
-        Column{
+        Column
+        {
             id: novel
             spacing: 5
             anchors.top: parent.top
             anchors.bottom:parent.bottom
+            //anchors.bottomMargin: 50
             anchors.left: parent.left
-//            anchors.verticalCenter: parent.verticalCenter;
             anchors.right: parent.right;
-            anchors.rightMargin: 5;
 
 
-            Text{
-                id: tile
+            //Title
+            Rectangle
+            {
                 width: parent.width
-                height: 20
-                font.pointSize : 12
-                text: "小说标题---第一章 风流人物"
+                height: 16
+                Text
+                {
+                    id: tile
+                    font.pointSize: 12
+                    text: "小说标题---第一章 风流人物"
 
+                }
             }
 
             //分割线
-            Rectangle{
+            Rectangle
+            {
                 width: parent.width
                 color: "#999"
                 height: 1
 
             }
 
-
-            Rectangle{
+            //正文
+            Rectangle
+            {
                 width: parent.width
                 height: parent.height
 
-
-                Text{
+                Text
+                {
                     id:content
                     width: parent.width
                     height: parent.height
-                    font.pointSize : 16
+                    //padding: 10
+                    font.pointSize: 12
+
                     minimumPointSize: 5
-                    maximumLineCount : 17
-                    text: "一二三四五六七八九十"
+                    maximumLineCount : (height) / (content.fontInfo.pointSize * 2)
+                    text: mainWidget.novelText
 
-
-                    bottomPadding:5
                     wrapMode: Text.WordWrap
-                    onContentSizeChanged: {
+                    onContentSizeChanged:
+                    {
                         console.log("lineCount:" + content.lineCount)
                         console.log("truncated:" + content.truncated)
                         console.log("height:" + content.height)
-                        console.log("fontInfo.pointSize:" + content.fontInfo.pointSize)
+                        console.log("fontInfo.pointSize:" + content.fontInfo.pointSize + "," + Math.ceil(content.fontInfo.pointSize) )
+                        console.log("maximumLineCount:" + maximumLineCount)
                         console.log("contentWidth:" + content.contentWidth)
 
                         console.log("contentHeight:" + content.contentHeight + "\n")
-
+                        //console.log(text)
 
                     }
 
+
                 }
 
-
-
+                Rectangle
+                {
+                    id: bottomRectangle
+                    anchors.bottom: parent.bottom
+                    anchors.bottomMargin: 5
+                    width: parent.width
+                    height: 5
+                    color: "#333"
+                }
             }
         }
 
-        Rectangle{
+        Rectangle
+        {
             id:setting
             visible: false
             z: 1
@@ -104,35 +145,37 @@ Item {
             color: "#EEE"
 
             anchors.bottom: parent.bottom
-            anchors.bottomMargin: 10
-
             property color textColor: "#000"
 
-            Column{
+            Column
+            {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 spacing: 10
 
-
-                Row{
+                Row
+                {
                     spacing: 10
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    Rectangle{
+                    Rectangle
+                    {
                         width: 40
                         height: 40
                         radius: 20
 
-                        Text{
+                        Text
+                        {
                             text: "A-"
                             font.pixelSize: 28
                             color: "green"
-
-                            MouseArea{
+                            MouseArea
+                            {
                                 anchors.fill: parent
-
-                                onClicked:{
-                                    content.font.pointSize -= 1
+                                onClicked:
+                                {
+                                    content.font.pointSize-= 2
+                                    content.text = mainWidget.novelText;
                                     console.log("red")
                                 }
                             }
@@ -140,21 +183,25 @@ Item {
                     }
 
 
-                    Rectangle{
+                    Rectangle
+                    {
                         width: 40
                         height: 40
                         radius: 20
 
-                        Text{
+                        Text
+                        {
                             text: "A+"
                             font.pixelSize: 28
                             color: "green"
-
-                            MouseArea{
+                            MouseArea
+                            {
                                 anchors.fill: parent
 
-                                onClicked:{
-                                    content.font.pointSize += 1
+                                onClicked:
+                                {
+                                    content.font.pointSize+= 2
+                                    content.text = mainWidget.novelText;
                                     console.log("red")
                                 }
                             }
@@ -163,73 +210,83 @@ Item {
 
                 }
 
-                Row{
+                Row
+                {
                     spacing: 10
-
                     anchors.horizontalCenter: parent.horizontalCenter
 
-                    Rectangle{
+                    Rectangle
+                    {
                         width: 40
                         height: 40
                         radius: 20
                         color:"red"
 
-                        MouseArea{
+                        MouseArea
+                        {
                             anchors.fill: parent
 
-                            onClicked:{
+                            onClicked:
+                            {
                                 content.color = parent.color
                                 console.log("red")
                             }
                         }
                     }
 
-                    Rectangle{
+                    Rectangle
+                    {
                         width: 40
                         height: 40
                         radius: 20
                         color:"green"
 
-                        MouseArea{
+                        MouseArea
+                        {
                             anchors.fill: parent
 
-                            onClicked:{
+                            onClicked:
+                            {
                                 content.color = parent.color
                                 console.log("green")
                             }
                         }
                     }
 
-                    Rectangle{
+                    Rectangle
+                    {
                         width: 40
                         height: 40
                         radius: 20
                         border.color: Qt.lighter("blue")
                         color:"blue"
 
-                        //active:	setting.textColor	==	color
-                        MouseArea{
+                        MouseArea
+                        {
                             anchors.fill: parent
 
-                            onClicked:{
+                            onClicked:
+                            {
                                 content.color = parent.color
                                 console.log("blue")
                             }
                         }
                     }
 
-                    Rectangle{
+                    Rectangle
+                    {
                         width: 40
                         height: 40
                         radius: 20
                         border.color: Qt.lighter("black")
                         color:"black"
 
-                        //active:	setting.textColor	==	color
-                        MouseArea{
+                        MouseArea
+                        {
                             anchors.fill: parent
 
-                            onClicked:{
+                            onClicked:
+                            {
                                 content.color = parent.color
                                 console.log("blue")
                             }
@@ -243,8 +300,8 @@ Item {
 
         MouseArea{
             anchors.fill: parent
-            onClicked: {
-
+            onClicked:
+            {
                 //设置对话框
                 if(mouseX > parent.width * 0.2 &&
                         mouseX < parent.width * 0.8)
@@ -254,8 +311,6 @@ Item {
                     {
                         setting.visible = !setting.visible
                     }
-
-
                 }
                 else
                 {
@@ -276,11 +331,7 @@ Item {
                         }
                     }
                 }
-
-
             }
         }
-
-
     }
 }

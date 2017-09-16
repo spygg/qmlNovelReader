@@ -13,8 +13,9 @@ class FileIO : public QObject
 public:
     explicit FileIO(QObject *parent = nullptr);
 
-    Q_PROPERTY(QString source
-               WRITE setSource
+    Q_PROPERTY(QString fileName
+               READ getFileName
+               WRITE setFileName
                NOTIFY sourceChanged)
 
 
@@ -24,9 +25,10 @@ public:
 
 
 
+    Q_INVOKABLE QString readAWord();
 public slots:
-    void setSource(const QString szFileName);
-
+    void setFileName(const QString szFileName);
+    QString getFileName();
 signals:
     void sourceChanged(const QString& szFileName);
     void error(const QString& msg);
